@@ -7,7 +7,6 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    jokes_directory: '%jokes_directory_path%'
 
 framework:
     #esi: ~

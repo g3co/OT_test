@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\Interfaces\IJokeApi;
+use AppBundle\Service\Interfaces\IJokeSaver;
 use AppBundle\Service\Interfaces\IMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +29,10 @@ class DefaultController extends Controller
      * @Route("/form-handler", name="form_handler", methods={"POST"})
      * @param Request $request
      * @param IJokeApi $api
+     * @param IJokeSaver $saver
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function formAction(Request $request, IJokeApi $api)
+    public function formAction(Request $request, IJokeApi $api, IJokeSaver $saver)
     {
         $email = $request->get('email');
         $category = $request->get('category');
@@ -43,6 +45,8 @@ class DefaultController extends Controller
             ->setTo($email)
             ->setBody($joke);
         $this->get('mailer')->send($message);
+
+        $saver->save($joke);
 
         $this->addFlash(
             'notice',

@@ -40,6 +40,7 @@ class JokeApi implements IJokeApi
     }
 
     /**
+     * Getting joke from API
      * @param string $category
      * @return string
      * @throws Exception
