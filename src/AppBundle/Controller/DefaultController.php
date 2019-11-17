@@ -35,7 +35,14 @@ class DefaultController extends Controller
     public function formAction(Request $request, IJokeApi $api, IJokeSaver $saver)
     {
         $email = $request->get('email');
+        if (!$email) {
+            return $this->returnToMainPage('Error: empty email');
+        }
+
         $category = $request->get('category');
+        if (!$category) {
+            return $this->returnToMainPage('Error: empty category');
+        }
 
         $joke = $api->getJoke($category);
 
@@ -48,10 +55,17 @@ class DefaultController extends Controller
 
         $saver->save($joke);
 
-        $this->addFlash(
-            'notice',
-            'Joke has sent to ' . $email
-        );
+        return $this->returnToMainPage('Joke has sent to ' . $email);
+    }
+
+    /**
+     * Redirect to main page with flash message
+     * @param string $message
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function returnToMainPage(string $message)
+    {
+        $this->addFlash('notice', $message);
 
         return $this->redirectToRoute('homepage', [], 301);
     }
