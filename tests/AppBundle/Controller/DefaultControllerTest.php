@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Service\JokeApi;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
@@ -10,7 +11,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/');
+        $client->request('GET', '/');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
@@ -34,7 +35,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $formHandleUrl = $client->getContainer()->get('router')->generate('form_handler');
-        $client->request('POST', $formHandleUrl, ['category' => 'nerdy']);
+        $client->request('POST', $formHandleUrl, ['category' => 'test']);
         $crawler = $client->followRedirect();
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -57,10 +58,16 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $formHandleUrl = $client->getContainer()->get('router')->generate('form_handler');
+
+        /** @var JokeApi $api */
+        $api = $client->getContainer()->get('AppBundle\Service\JokeApi');
+        $category = $api->getCategories();
+
         $client->request('POST', $formHandleUrl, [
             'email' => 'example@google.com',
-            'category' => 'nerdy'
+            'category' => $category[0]
         ]);
+
         $crawler = $client->followRedirect();
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

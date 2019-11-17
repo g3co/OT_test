@@ -3,8 +3,8 @@
 namespace AppBundle\Service;
 
 use AppBundle\Service\Interfaces\IJokeApi;
-use GuzzleHttp\Client;
 use Exception;
+use GuzzleHttp\Client;
 
 class JokeApi implements IJokeApi
 {

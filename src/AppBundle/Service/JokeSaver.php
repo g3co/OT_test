@@ -20,9 +20,9 @@ class JokeSaver implements IJokeSaver
      * @param string $joke
      * @return bool
      */
-    public function save(string $joke):bool
+    public function save(string $joke): bool
     {
-        $fileName = sha1($joke). ".txt";
+        $fileName = sha1($joke) . ".txt";
         $id = file_put_contents($this->filePath . $fileName, $joke);
 
         return $id !== false;
