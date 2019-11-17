@@ -28,10 +28,9 @@ class DefaultController extends Controller
      * @Route("/form-handler", name="form_handler", methods={"POST"})
      * @param Request $request
      * @param IJokeApi $api
-     * @param IMailer $mailer
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function formAction(Request $request, IJokeApi $api, IMailer $mailer)
+    public function formAction(Request $request, IJokeApi $api)
     {
         $email = $request->get('email');
         $category = $request->get('category');
